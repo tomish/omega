@@ -1,0 +1,80 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <link href="omega.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="text-xs-center">
+        <h3>Welcome to the Omega turn survey</h3>
+
+        <p>This is a video survey on Omega turns being carried out by the OpenWorm project.</p>
+
+        <p>You will be shown around 50 videos of turns. Please classify each of these as Omega turns or Not Omega turns.</p>
+
+        <p>Before you start, it would be helpful to collect some basic data about you, although this is not compulsory.</p>
+
+        <form>
+          <label for="university">University</label>
+          <input type="text" class="form-control stored" id="university" name="university" placeholder="Enter university or lab">
+
+          <label for="email">Academic Email address</label>
+          <input type="email" class="form-control stored" id="email" name="email" placeholder="Enter email">
+    	  <small class="text-muted">We'll never share your email with anyone else.</small>
+        </form>
+
+
+        <p>Please keep going until the end of the trial, or the data will not be sent to us.<br>
+        <p>To start the trials please click Continue.</p>
+
+        <div id="num_vids_msg" style="visibility:hidden">
+        You currently have classified <span id="num_vids"></span> videos. Would you like to continue?
+        <button type="button" class="btn btn-danger-outline btn-sm" id="restart_btn" onclick="clear_survey()">Restart?</button> 
+        </div>
+
+        
+        <button type="button" class="btn btn-primary-outline" id="continue_btn" onclick="location.href='survey.html';">Continue</button>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+		$(document).ready(function () {
+		    function init() {
+		        if (localStorage["university"]) {
+		            $('#university').val(localStorage["university"]);
+		        }
+		        if (localStorage["email"]) {
+		            $('#email').val(localStorage["email"]);
+		        }
+		        if (localStorage["indices"]) {
+		        	indices = JSON.parse(localStorage["indices"]);
+		            $('#num_vids').text(indices.length-1);
+		            $('#num_vids_msg').css("visibility", "visible");
+		        }
+		    }
+		    init();
+		});
+
+		$('.stored').keyup(function () {
+		    localStorage[$(this).attr('name')] = $(this).val();
+		});
+
+		function clear_survey() {
+		    localStorage.clear();
+		    $('#university').val("");
+		    $('#email').val("");
+        $('#num_vids_msg').css("visibility", "hidden");
+		}
+	</script>
+
+  </body>
+</html>

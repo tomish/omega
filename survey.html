@@ -1,0 +1,144 @@
+<!DOCTYPE html> 
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <link href="omega.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="text-xs-center">
+        <h3>Is this an Omega turn?</h3>
+        <video id="video1" width="640">
+          <source src="" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+        <br>
+        <button type="button" class="btn btn-success-outline" id="yes_btn" onclick="next(true)">Yes</button> 
+        <button type="button" class="btn btn-secondary-outline" id="replay_btn" onclick="play_vid()">Replay</button> 
+        <button type="button" class="btn btn-danger-outline" id="no_btn" onclick="next(false)">No</button> 
+        <p id="video_id"></p>
+      </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+    <script>
+      // Load the json of our index into a dict
+      var dict = {}; // Dict to hold indices and filenames of the videos
+      var firstIndex = 642; // Find a better value for this. Currently just middle video
+
+      var vid = document.getElementById("video1");
+      var vidInfo = document.getElementById("video_id");
+      var yesBtn = document.getElementById("yes_btn");
+      var noBtn = document.getElementById("no_btn");
+      var replayBtn = document.getElementById("replay_btn");
+
+      vid.addEventListener('ended', function() {
+        yesBtn.disabled = false;
+        noBtn.disabled = false;
+        replayBtn.disabled = false;
+      });
+
+      $(document).ready(function() {
+        $.getJSON("indices.json", function(result){
+          $.each(result, function(i, field){
+            dict[i.toString()] = field
+          });
+        }).then(function() {
+          if (localStorage["indices"] ==  null) {
+            indices = [firstIndex];
+            localStorage.setItem("indices", JSON.stringify(indices));
+          }
+          loadLatest()
+          playVid();
+        });
+      });
+
+      function getFileName(vidIndex) {
+        return "data/" + dict[vidIndex];
+      }
+
+      function loadLatest() {
+        indices = JSON.parse(localStorage["indices"]);
+        vidIndex = indices[indices.length-1]
+        // For debugging
+        vidInfo.innerHTML = "Current video: "+ indices.length + ", Index: " + vidIndex + ", Filename: " + dict[vidIndex]; 
+        filename = getFileName(vidIndex);
+        vid.setAttribute("src", filename);
+      }
+
+      function playVid() {
+        yesBtn.disabled = true;
+        noBtn.disabled = true;
+        replayBtn.disabled = true;
+        vid.play();
+      }
+
+      function play() {
+        if (vid.paused) 
+          vid.play();
+      } 
+      
+      function next(choice) {
+        if (isFinished()) {
+          submitData();
+        } else {
+          nextIndex = getNextIndex(vidIndex, choice);
+
+          indices = JSON.parse(localStorage.getItem("indices"));
+          vidIndex = indices[indices.length-1];
+          indices.push(nextIndex);
+          localStorage.setItem("indices", JSON.stringify(indices));
+
+          loadLatest();
+          playVid();
+          console.log(indices);
+        }
+      }
+
+      function isFinished() {
+        indices = JSON.parse(localStorage["indices"]);
+        return (indices.length > 3);
+      }
+
+      function submitData() {
+        var q1 = localStorage.getItem("university");
+        var q2 = localStorage.getItem("email");
+        var q3 = localStorage.getItem("indices");
+        var baseURL = 'https://docs.google.com/forms/d/1_MgpgwQIorY4h3lI5cZYdqUp3RaiH7qXPCHpM-dgu3M/formResponse?';
+        //var submitRef = '&submit=Submit';
+        //var submitURL = (baseURL + q1ID + "=" + q1 + "&" + q2ID + "=" + q2 + "&" + q3ID + "=" + q3 + submitRef);
+        //console.log(submitURL);
+        //$(this)[0].action=submitURL;
+        $.post(baseURL, { "entry.194976565": q1, "entry.482846776": q2, "entry.1388297875": q3, "submit": "Submit" }, function( data ) {
+          console.log( data );
+        })
+          .done(function() {
+          })
+          .fail(function() {
+          })
+          .always(function() {
+            window.location.replace("thanks.html");
+        });
+      }
+
+      function getNextIndex(currentIndex, choice) {
+        // This is where we use Balazs's magic function
+        // For now just to test we will always go up by 1
+        if (choice == true) {
+          return currentIndex + 1;
+        } else {
+          return currentIndex - 1;
+        }
+      }
+
+    </script> 
+  </body> 
+</html>

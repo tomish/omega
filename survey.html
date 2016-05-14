@@ -113,10 +113,6 @@
         var q2 = localStorage.getItem("email");
         var q3 = localStorage.getItem("indices");
         var baseURL = 'https://docs.google.com/forms/d/1_MgpgwQIorY4h3lI5cZYdqUp3RaiH7qXPCHpM-dgu3M/formResponse?';
-        //var submitRef = '&submit=Submit';
-        //var submitURL = (baseURL + q1ID + "=" + q1 + "&" + q2ID + "=" + q2 + "&" + q3ID + "=" + q3 + submitRef);
-        //console.log(submitURL);
-        //$(this)[0].action=submitURL;
         $.post(baseURL, { "entry.194976565": q1, "entry.482846776": q2, "entry.1388297875": q3, "submit": "Submit" }, function( data ) {
           console.log( data );
         })

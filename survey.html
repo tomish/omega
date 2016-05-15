@@ -28,11 +28,16 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.2/js/tether.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script>
       // Load the json of our index into a dict
-      var dict = {}; // Dict to hold indices and filenames of the videos
-      var firstIndex = 642; // Find a better value for this. Currently just middle video
+      var firstIndex = 590; // This needs to be set
+      var stepSize = 0.185;
+      var maxMovies = 9;
+      var movies = []
+      var defaultMovies = [];
+      var movieDict = {}; // Used temporarily to get indices of movie names
 
       var vid = document.getElementById("video1");
       var vidInfo = document.getElementById("video_id");
@@ -47,31 +52,49 @@
       });
 
       $(document).ready(function() {
-        $.getJSON("indices.json", function(result){
-          $.each(result, function(i, field){
-            dict[i.toString()] = field
+        // Load all the data from the json files.
+        $.getJSON("indices.json", function(){
+        }).done(function(result) {
+          $.each(result['movies'], function(i, object){
+            movies.push({'filename':object['filename'], 'rank':object['rank']});
+            movieDict[object['filename']] = i;
           });
-        }).then(function() {
-          if (localStorage["indices"] ==  null) {
-            indices = [firstIndex];
-            localStorage.setItem("indices", JSON.stringify(indices));
-          }
-          loadLatest()
-          playVid();
-        });
+
+          $.getJSON("defaults.json", function(){
+          }).done(function(result) {
+            $.each(result['default_movies'], function(i, object){
+              defaultMovies.push(movieDict[object['filename']]);
+            });
+            console.log(defaultMovies);
+            currentIndex = getCurrentIndex();
+            loadMovie(currentIndex);
+            playVid();
+          })
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log( "error" + textStatus );
+          })
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+          console.log( "error" + textStatus );
+        })
       });
 
-      function getFileName(vidIndex) {
-        return "data/" + dict[vidIndex];
+
+      function getMovieCount(){
+        if (localStorage["results"] ==  null){
+          return 0;
+        }
+        else {
+          return JSON.parse(localStorage["results"]).length;
+        }
       }
 
-      function loadLatest() {
-        indices = JSON.parse(localStorage["indices"]);
-        vidIndex = indices[indices.length-1]
-        // For debugging
-        vidInfo.innerHTML = "Current video: "+ indices.length + ", Index: " + vidIndex + ", Filename: " + dict[vidIndex]; 
-        filename = getFileName(vidIndex);
-        vid.setAttribute("src", filename);
+      function loadMovie(index) {
+        filename = movies[index]['filename'];
+        movieNum = getMovieCount() + 1;
+        vidInfo.innerHTML = "Current video: " + movieNum + ", Index: " + index + ", Filename: " + filename;
+        filedir = "data/"
+        vid.setAttribute("src", filedir + filename);
       }
 
       function playVid() {
@@ -90,30 +113,37 @@
         if (isFinished()) {
           submitData();
         } else {
-          nextIndex = getNextIndex(vidIndex, choice);
+          if (localStorage["results"] ==  null){
+            results = [];
+          }
+          else {
+            results = JSON.parse(localStorage["results"]);
+          }
+          currentIndex = getCurrentIndex();
+          results.push({"index":currentIndex, "score":choice});
+          localStorage.setItem("results", JSON.stringify(results));
 
-          indices = JSON.parse(localStorage.getItem("indices"));
-          vidIndex = indices[indices.length-1];
-          indices.push(nextIndex);
-          localStorage.setItem("indices", JSON.stringify(indices));
-
-          loadLatest();
+          currentIndex = getCurrentIndex();
+          loadMovie(currentIndex);
           playVid();
-          console.log(indices);
         }
       }
 
       function isFinished() {
-        indices = JSON.parse(localStorage["indices"]);
-        return (indices.length > 3);
+        count = getMovieCount();
+        return (count+1 >= maxMovies);
       }
 
       function submitData() {
-        var q1 = localStorage.getItem("university");
-        var q2 = localStorage.getItem("email");
-        var q3 = localStorage.getItem("indices");
+        var q1 = localStorage.getItem("name");
+        var q2 = localStorage.getItem("lab");
+        var q3 = localStorage.getItem("experience") ? "Yes" : "No";
+        var q4 = localStorage.getItem("confidence");
+        var q5 = localStorage.getItem("email");
+        var q6 = localStorage.getItem("results");
+
         var baseURL = 'https://docs.google.com/forms/d/1_MgpgwQIorY4h3lI5cZYdqUp3RaiH7qXPCHpM-dgu3M/formResponse?';
-        $.post(baseURL, { "entry.194976565": q1, "entry.482846776": q2, "entry.1388297875": q3, "submit": "Submit" }, function( data ) {
+        $.post(baseURL, { "entry.194976565": q1, "entry.1215551247": q2, "entry.1499982508": q3, "entry.586932810": q4, "entry.482846776": q5, "entry.1388297875": q6, "submit": "Submit" }, function(data) {
           console.log( data );
         })
           .done(function() {
@@ -125,14 +155,62 @@
         });
       }
 
-      function getNextIndex(currentIndex, choice) {
+      function binarySearch(searchElement) {
+        var minIndex = 0;
+        var maxIndex = movies.length - 1;
+        var currentIndex = firstIndex;
+        var currentElement;
+
+        while (minIndex <= maxIndex) {
+          currentIndex = (minIndex + maxIndex) / 2 | 0;
+          currentElement = parseFloat(movies[currentIndex]['rank']);
+   
+          if (currentElement < searchElement) {
+            minIndex = currentIndex + 1;
+          }
+          else if (currentElement > searchElement) {
+            maxIndex = currentIndex - 1;
+          }
+          else {
+            break;
+          }
+        }
+        return currentIndex;
+      }
+
+      function getCurrentIndex(currentIndex, choice) {
         // This is where we use Balazs's magic function
         // For now just to test we will always go up by 1
-        if (choice == true) {
-          return currentIndex + 1;
+        count = getMovieCount();
+
+        if (count % 2 == 0 && count / 2 < defaultMovies.length) {
+          nextIndex = defaultMovies[count/2];
         } else {
-          return currentIndex - 1;
+          if (count == 1) {
+            return firstIndex;
+          } else {
+            results = JSON.parse(localStorage["results"]);
+            if (count / 2 < defaultMovies.length){
+              prevResult = results[results.length - 2];
+            } else {
+              prevResult = results[results.length - 1];
+            }
+            prevIndex = prevResult['index'];
+            prevScore = prevResult['score'];
+            prevRank = parseFloat(movies[prevIndex]['rank']);
+
+            if (prevScore == "true") {
+              multiplier = 1.0;
+            } else {
+              multiplier = -1.0;
+            }
+
+            nextRank = prevRank - stepSize * multiplier;
+            nextRank += Math.random() * 0.025
+            nextIndex = binarySearch(nextRank);
+          }
         }
+        return nextIndex;
       }
 
     </script> 

@@ -14,108 +14,164 @@
     <div class="container">
       <div class="text-xs-center">
         <h3>Welcome to OpenWorm's Omega turn survey</h3>
-
+      </div>
+      
+      <div class="text-xs-center m-t-3">
         <p>Omega turns are a characteristic behaviour of <em>C. elegans</em> that have been extensively studied from many perspectives.
-        Traditionally these events are scored manually which is inherently variable.
-        Recently automated methods took over this job, but different publications have used different methods for detecting Omega turns.</p>
+        Traditionally these events are scored manually, which is inherently variable.
+        Recently, automated methods took over this job, but different publications have used different methods for detecting Omega turns.</p>
 
-        <p>We are interested in how consistent are the different expert annotations with each other and with the various Omega detection algorithms that are used in the literature.
-        In the following you will see clips of worm behaviour and we will ask you whether you think it was on Omega turn or not.
+        <p>We are interested in the consistency of the different expert annotations with each other and with the various Omega detection algorithms that are used in the literature.
+        In the following task you will see clips of worm behaviour and we will ask you whether you think it was on Omega turn or not.
         That is all. The survey takes about <strong>5 mins</strong>.</p>
 
         <p>Below we ask for a minimal amount of information about you.
         Note that the data is strictly for research purposes and <strong>will not be shared</strong> with anyone and personally you <strong>will not be identifiable</strong> from anything that we publish.</p>
+      </div>
 
+      <div class="col-sm-8 col-sm-offset-2 m-t-3">
         <form>
-          <fieldset class="form-group">
-          <label for="name">Name</label>
-          <input type="text" class="form-control stored" id="name" name="name" placeholder="Enter name">
-          </fieldset>
+          <div class="form-group row">
+            <label class="col-sm-5 form-control-label" for="name">Name *</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control stored" id="name" name="name" placeholder="Enter name">
+            </div>
+          </div>
 
-          <fieldset class="form-group">
-          <label for="lab">Lab</label>
-          <input type="text" class="form-control stored" id="lab" name="lab" placeholder="Enter your lab">
-          </fieldset>
+          <div class="form-group row">
+            <label class="col-sm-5 form-control-label" for="lab">Lab *</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control stored" id="lab" name="lab" placeholder="Enter your lab">
+            </div>
+          </div>
 
-          <fieldset class="form-group">
-          <label for="omega_experience">Have you ever scored Omega turns for a publication?</label><br>
-          <label><input type="checkbox" class="stored" id="omega_experience" name="omega_experience"> Yes</label>
-          </fieldset>
+          <div class="form-group row">
+            <label class="col-sm-5 form-control-label" for="experience">Have you ever scored Omega turns for a publication? *</label>
+            <div class="col-sm-7">
+              <label><input type="checkbox" class="stored" id="experience" name="experience"> Yes</label>
+            </div>
+          </div>
 
-          <fieldset class="form-group">
-          <label for="confidence">How confident are you in scoring Omega turns?</label><br>
-          <small class="text-muted">1 is not confident, 5 is very confident</small>
-          <label class="radio-inline">
-            <input type="radio" class="stored" name="confidence" id="confidence1" value="1"> 1
-          </label>
-          <label class="radio-inline">
-            <input type="radio" class="stored" name="confidence" id="confidence2" value="2"> 2
-          </label>
-          <label class="radio-inline">
-            <input type="radio" class="stored" name="confidence" id="confidence3" value="3"> 3
-          </label>
-          <label class="radio-inline">
-            <input type="radio" class="stored" name="confidence" id="confidence4" value="4"> 4
-          </label>
-          <label class="radio-inline">
-            <input type="radio" class="stored" name="confidence" id="confidence5" value="5"> 5
-          </label>
-          </fieldset>
+          <div class="form-group row">
 
-          <fieldset class="form-group">
-          <label for="email">Academic Email address</label>
-          <input type="email" class="form-control stored" id="email" name="email" placeholder="Enter email">
-    	    <small class="text-muted">We'll never share your email with anyone else.</small>
-          </fieldset>
+            <label class="col-sm-5 form-control-label" for="confidence">How confident are you in scoring Omega turns? *</label>
+            <div class="col-sm-7">
+              <label><small class="text-muted">Not confident</small></label>
+
+              <label class="radio-inline">
+                <input type="radio" class="stored" name="confidence" id="confidence1" value="1"> 1
+              </label>
+              <label class="radio-inline">
+                <input type="radio" class="stored" name="confidence" id="confidence2" value="2"> 2
+              </label>
+              <label class="radio-inline">
+                <input type="radio" class="stored" name="confidence" id="confidence3" value="3"> 3
+              </label>
+              <label class="radio-inline">
+                <input type="radio" class="stored" name="confidence" id="confidence4" value="4"> 4
+              </label>
+              <label class="radio-inline">
+                <input type="radio" class="stored" name="confidence" id="confidence5" value="5"> 5
+              </label>
+
+              <label><small class="text-muted">Very confident</small></label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-5 form-control-label" for="email">Email</label>
+            <div class="col-sm-7">
+              <input type="email" class="form-control stored" id="email" name="email" placeholder="Enter email">
+      	      <small class="text-muted">We'll never share your email with anyone else.</small>
+            </div>
+          </div>
         </form>
+      </div>
 
-        <p>The website has been optimised to Chrome and Firefox on desktop machines and might not work appropriately on mobile devices.</p>
+      <div class="clearfix"></div>
 
-        <p>If you have any further question please ask <a href="mailto:szbazsu@gmail.com Subject=Omega%20survey" target="_top">szbazsu@gmail.com</a></p>
-
-        <p>Kind regards,<br/>
+      <div class="text-xs-center m-t-3">
+        <p>The website has been optimised to Chrome and Firefox on desktop machines and might not work appropriately on mobile devices.<br/>
+        If you have any further questions please ask <a href="mailto:szbazsu@gmail.com Subject=Omega%20survey" target="_top">szbazsu@gmail.com</a>.<br/><br/>
+        Kind regards,<br/><br/>
         Balazs, Tom and the rest of the OpenWorm team</p>
 
-        <p>To start the trials please click Continue.</p>
-
         <div id="num_vids_msg" style="visibility:hidden">
-        You currently have classified <span id="num_vids"></span> videos. Would you like to continue?
-        <button type="button" class="btn btn-danger-outline btn-sm" id="restart_btn" onclick="clear_survey()">Restart?</button> 
+          You currently have classified <span id="num_vids"></span> videos. Would you like to continue?
+          <button type="button" class="btn btn-danger-outline btn-sm" id="restart_btn" onclick="clearSurvey()">Restart?</button> 
         </div>
 
-        
-        <button type="button" class="btn btn-primary-outline" id="continue_btn" onclick="location.href='survey.html';">Continue</button>
+        <div>
+          <button type="button" class="btn btn-primary-outline" id="continue_btn" onclick="goToSurvey()">Continue</button>
+        </div>
+        <div id="form_msg" class="alert alert-danger m-t-1" role="alert" style="visibility:hidden"> 
+          Please make sure all required fields are filled in.
+        </div>
       </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.2/js/tether.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script type="text/javascript">
 		$(document).ready(function () {
 		    function init() {
-		        if (localStorage["university"]) {
-		            $('#university').val(localStorage["university"]);
+		        if (localStorage["name"]) {
+		            $('#name').val(localStorage["name"]);
 		        }
+            if (localStorage["lab"]) {
+                $('#lab').val(localStorage["lab"]);
+            }
 		        if (localStorage["email"]) {
 		            $('#email').val(localStorage["email"]);
 		        }
+            if (localStorage["confidence"]) {
+                checkboxid = '#confidence' + localStorage["confidence"]
+                $(checkboxid).prop("checked",true);
+            }
 		        if (localStorage["indices"]) {
 		        	indices = JSON.parse(localStorage["indices"]);
 		            $('#num_vids').text(indices.length-1);
 		            $('#num_vids_msg').css("visibility", "visible");
 		        }
+            if (localStorage["experience"] == "true") {
+              $('#experience').prop("checked",true);
+            } else {
+              localStorage["experience"] = "false"
+            }
 		    }
 		    init();
 		});
 
+    // If we don't include keyup, then doesn't change until change focus
 		$('.stored').keyup(function () {
 		    localStorage[$(this).attr('name')] = $(this).val();
 		});
+    $('.stored').change(function() {
+        if ($(this).is(':checkbox')) {
+          localStorage[$(this).attr('name')] = $(this).is(":checked");
+        } else {
+          localStorage[$(this).attr('name')] = $(this).val();
+        }
+    });
 
-		function clear_survey() {
+    function goToSurvey() {
+        console.log('trying to continue');
+        if (localStorage["name"] && localStorage["lab"] && localStorage["confidence"]){
+          window.location.href = "survey.html";
+        } else {
+          console.log('no data');
+          $('#form_msg').css("visibility", "visible");
+        }
+    }
+
+		function clearSurvey() {
 		    localStorage.clear();
-		    $('#university').val("");
+		    $('#name').val("");
+        $('#lab').val("");
 		    $('#email').val("");
+        $('#experience').val("");
+        $('#confidence').val("");
         $('#num_vids_msg').css("visibility", "hidden");
 		}
 	</script>

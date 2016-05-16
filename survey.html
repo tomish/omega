@@ -100,7 +100,7 @@
         filename = movies[index]['filename'];
         movieNum = getMovieCount() + 1;
         vidInfo.innerHTML = "Current video: " + movieNum + ", Index: " + index + ", Filename: " + filename;
-        filedir = "data/"
+        filedir = "https://s3-us-west-2.amazonaws.com/omega-data/"
         vid.setAttribute("src", filedir + filename);
       }
 

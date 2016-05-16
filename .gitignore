@@ -1,5 +1,2 @@
 *.py~
 *.pyc
-
-data/*
-data_old/*

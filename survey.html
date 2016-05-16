@@ -80,6 +80,12 @@
         })
       });
 
+      $('#video1').on('loadstart', function (event) {
+        $(this).attr("poster", "images/loading.gif");
+      });
+      $('#video1').on('canplay', function (event) {
+        $(this).removeAttr("poster");
+      });
 
       function getMovieCount(){
         if (localStorage["results"] ==  null){

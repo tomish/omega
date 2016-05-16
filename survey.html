@@ -32,9 +32,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script>
       // Load the json of our index into a dict
-      var firstIndex = 590; // This needs to be set
+      var firstIndex = 590;  // TODO: This needs to be set! Currently middle video
       var stepSize = 0.185;
-      var maxMovies = 9;
+      var maxMovies = 50;  // How many movies to show
+      var currentIndex;
       var movies = []
       var defaultMovies = [];
       var movieDict = {}; // Used temporarily to get indices of movie names
@@ -66,7 +67,7 @@
               defaultMovies.push(movieDict[object['filename']]);
             });
             console.log(defaultMovies);
-            currentIndex = getCurrentIndex();
+            currentIndex = getNextIndex();
             loadMovie(currentIndex);
             playVid();
           })
@@ -110,20 +111,21 @@
       } 
       
       function next(choice) {
-        if (isFinished()) {
-          submitData();
-        } else {
-          if (localStorage["results"] ==  null){
-            results = [];
-          }
-          else {
-            results = JSON.parse(localStorage["results"]);
-          }
-          currentIndex = getCurrentIndex();
-          results.push({"index":currentIndex, "score":choice});
-          localStorage.setItem("results", JSON.stringify(results));
+        // Store the data for this trial
+        if (localStorage["results"] ==  null){
+          results = [];
+        }
+        else {
+          results = JSON.parse(localStorage["results"]);
+        }
+        results.push({"index":currentIndex, "score":choice});
+        localStorage.setItem("results", JSON.stringify(results));
 
-          currentIndex = getCurrentIndex();
+        if (isFinished()){
+          submitData();
+        } else{
+          // Load next trial
+          currentIndex = getNextIndex();
           loadMovie(currentIndex);
           playVid();
         }
@@ -131,13 +133,13 @@
 
       function isFinished() {
         count = getMovieCount();
-        return (count+1 >= maxMovies);
+        return (count >= maxMovies);
       }
 
       function submitData() {
         var q1 = localStorage.getItem("name");
         var q2 = localStorage.getItem("lab");
-        var q3 = localStorage.getItem("experience") ? "Yes" : "No";
+        var q3 = (localStorage.getItem("experience") == "true") ? "Yes" : "No";
         var q4 = localStorage.getItem("confidence");
         var q5 = localStorage.getItem("email");
         var q6 = localStorage.getItem("results");
@@ -178,7 +180,7 @@
         return currentIndex;
       }
 
-      function getCurrentIndex(currentIndex, choice) {
+      function getNextIndex(currentIndex, choice) {
         // This is where we use Balazs's magic function
         // For now just to test we will always go up by 1
         count = getMovieCount();

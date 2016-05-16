@@ -127,15 +127,15 @@
 		        }
             if (localStorage["confidence"]) {
                 checkboxid = '#confidence' + localStorage["confidence"]
-                $(checkboxid).prop("checked",true);
+                $(checkboxid).prop("checked", true);
             }
-		        if (localStorage["indices"]) {
-		        	indices = JSON.parse(localStorage["indices"]);
-		            $('#num_vids').text(indices.length-1);
+		        if (localStorage["results"]) {
+		        	results = JSON.parse(localStorage["results"]);
+		            $('#num_vids').text(results.length);
 		            $('#num_vids_msg').css("visibility", "visible");
 		        }
             if (localStorage["experience"] == "true") {
-              $('#experience').prop("checked",true);
+              $('#experience').prop("checked", true);
             } else {
               localStorage["experience"] = "false"
             }
@@ -156,7 +156,6 @@
     });
 
     function goToSurvey() {
-        console.log('trying to continue');
         if (localStorage["name"] && localStorage["lab"] && localStorage["confidence"]){
           window.location.href = "survey.html";
         } else {
@@ -173,6 +172,12 @@
         $('#experience').val("");
         $('#confidence').val("");
         $('#num_vids_msg').css("visibility", "hidden");
+        $('#experience').prop("checked", false);
+        $('#confidence1').prop("checked", false);
+        $('#confidence2').prop("checked", false);
+        $('#confidence3').prop("checked", false);
+        $('#confidence4').prop("checked", false);
+        $('#confidence5').prop("checked", false);
 		}
 	</script>
 

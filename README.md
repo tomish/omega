@@ -1,6 +1,6 @@
 # omega
 
-get video data from [here](https://drive.google.com/open?id=0B_Ef3i8Bsx5BdFl6S1RXWTNublE) and just extract the videos into the data folder
+get video data from [here](https://drive.google.com/file/d/0B_Ef3i8Bsx5BUk5HeFJjUkV3QjA/view?usp=sharing) and just extract the videos into the data folder
 
 To test, run a python webserver in the main omega folder, e.g.
 

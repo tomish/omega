@@ -21,7 +21,7 @@
         </video>
         <br>
         <button type="button" class="btn btn-success-outline" id="yes_btn" onclick="next(true)">Yes</button> 
-        <button type="button" class="btn btn-secondary-outline" id="replay_btn" onclick="play_vid()">Replay</button> 
+        <button type="button" class="btn btn-secondary-outline" id="replay_btn" onclick="playVid()">Replay</button> 
         <button type="button" class="btn btn-danger-outline" id="no_btn" onclick="next(false)">No</button> 
         <p id="video_id"></p>
       </div>
@@ -33,14 +33,15 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script>
       // Load the json of our index into a dict
-      var firstIndex = 590;  // TODO: This needs to be set! Currently middle video
+      var firstIndex = 344;  // TODO: This needs to be set! Currently middle video
       var stepSize = 0.185;
-      var maxMovies = 50;  // How many movies to show
+      var maxMovies = 40;  // How many movies to show
       var currentIndex;
       var movies = []
       var defaultMovies = [];
       var movieDict = {}; // Used temporarily to get indices of movie names
       var movieBaseURL = "http://groups.inf.ed.ac.uk/worms/";
+      var debugVideoData = false;
 
       var vid = document.getElementById("video1");
       var vidInfo = document.getElementById("video_id");
@@ -101,7 +102,12 @@
       function loadMovie(index) {
         filename = movies[index]['filename'];
         movieNum = getMovieCount() + 1;
-        vidInfo.innerHTML = "Current video: " + movieNum + ", Index: " + index + ", Filename: " + filename;
+        if (debugVideoData) {
+          vidInfo.innerHTML = "Current video: " + movieNum + ", Index: " + index + ", Filename: " + filename;
+        } else {
+          vidInfo.innerHTML = (movieNum / maxMovies * 100) + "% of survey complete.";
+        }
+        
         vid.setAttribute("src", movieBaseURL + filename);
       }
 
@@ -188,10 +194,9 @@
       }
 
       function getNextIndex(currentIndex, choice) {
-        // This is where we use Balazs's magic function
-        // For now just to test we will always go up by 1
         count = getMovieCount();
 
+        // It it's an even number and we haven't done all default movies yet..
         if (count % 2 == 0 && count / 2 < defaultMovies.length) {
           nextIndex = defaultMovies[count/2];
         } else {
@@ -208,7 +213,7 @@
             prevScore = prevResult['score'];
             prevRank = parseFloat(movies[prevIndex]['rank']);
 
-            if (prevScore == "true") {
+            if (prevScore == true) {
               multiplier = 1.0;
             } else {
               multiplier = -1.0;

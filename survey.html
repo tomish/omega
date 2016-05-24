@@ -105,7 +105,7 @@
         if (debugVideoData) {
           vidInfo.innerHTML = "Current video: " + movieNum + ", Index: " + index + ", Filename: " + filename;
         } else {
-          vidInfo.innerHTML = (movieNum / maxMovies * 100) + "% of survey complete.";
+          vidInfo.innerHTML = Math.round(movieNum / maxMovies * 100) + "% of survey complete.";
         }
         
         vid.setAttribute("src", movieBaseURL + filename);

@@ -33,14 +33,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script>
       // Load the json of our index into a dict
-      var firstIndex = 344;  // TODO: This needs to be set! Currently middle video
+      var firstIndex = 370;  // TODO: This needs to be set! Currently middle video
       var stepSize = 0.185;
       var maxMovies = 40;  // How many movies to show
       var currentIndex;
       var movies = []
       var defaultMovies = [];
       var movieDict = {}; // Used temporarily to get indices of movie names
-      var movieBaseURL = "http://groups.inf.ed.ac.uk/worms/";
+      var movieBaseURL = "http://groups.inf.ed.ac.uk/worms/clips_2/";
       var debugVideoData = false;
 
       var vid = document.getElementById("video1");
@@ -69,7 +69,6 @@
             $.each(result['default_movies'], function(i, object){
               defaultMovies.push(movieDict[object['filename']]);
             });
-            console.log(defaultMovies);
             currentIndex = getNextIndex();
             loadMovie(currentIndex);
             playVid();
@@ -217,6 +216,12 @@
               multiplier = 1.0;
             } else {
               multiplier = -1.0;
+            }
+
+            if ((prevScore == false && prevRank == movies.length - 1) ||
+                (prevScore == true && prevRank == 0)) {
+              prevRank = firstIndex + (Math.random() * 100) - 50;
+              console.log('resetting to middle' + parseInt(prevRank));
             }
 
             nextRank = prevRank - stepSize * multiplier;

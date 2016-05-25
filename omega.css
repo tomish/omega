@@ -1,8 +1,14 @@
 body {
   padding-top: 3rem;
+  font-size: 14pt;
 }
 
 .form-control-label {
     text-align: right;
     font-weight: bold;
+}
+
+#openwormlogo {
+    margin-left: 20px;
+    margin-right: 20px;
 }

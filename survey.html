@@ -100,7 +100,7 @@
 
       function loadMovie(index) {
         filename = movies[index]['filename'];
-        movieNum = getMovieCount() + 1;
+        movieNum = getMovieCount();
         if (debugVideoData) {
           vidInfo.innerHTML = "Current video: " + movieNum + ", Index: " + index + ", Filename: " + filename;
         } else {
@@ -218,9 +218,9 @@
               multiplier = -1.0;
             }
 
-            if ((prevScore == false && prevRank == movies.length - 1) ||
-                (prevScore == true && prevRank == 0)) {
-              prevRank = firstIndex + (Math.random() * 100) - 50;
+            if ((prevScore == false && prevIndex == movies.length - 1) ||
+                (prevScore == true && prevIndex == 0)) {
+              prevRank = movies[Math.round(movies.length / 2)]['rank'] + Math.random()
               console.log('resetting to middle' + parseInt(prevRank));
             }
 
